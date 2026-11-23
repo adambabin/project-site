@@ -85,20 +85,6 @@
     .scroll-cue span { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
     @keyframes bob { 50% { transform: translateY(5px); } }
 
-    /* ---------- marquee ---------- */
-    .marquee {
-      border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap;
-      padding: 18px 0; margin-bottom: clamp(56px, 10vh, 112px);
-      background: rgba(255,255,255,.02);
-    }
-    .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
-    .marquee-track span {
-      font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.6rem);
-      text-transform: uppercase; letter-spacing: -0.01em; padding-right: 40px;
-      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.45);
-    }
-    .marquee-track span:nth-child(even) { color: var(--text); -webkit-text-stroke: 0; }
-    @keyframes marquee { to { transform: translateX(-50%); } }
 
     /* ---------- game list ---------- */
     .games {
@@ -214,15 +200,6 @@
     <p>Everything here runs right in your browser, on a computer or a phone. Pick one and play.</p>
     <a class="scroll-cue" href="#games">See the games <span>↓</span></a>
   </header>
-
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
-      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
-      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
-      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
-    </div>
-  </div>
 
   <main class="games" id="games">
     <a class="game reveal" href="https://adambabin.github.io/shanghai-game/" target="_blank" rel="noopener" style="--accent:#f5c04a">
