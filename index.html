@@ -4,105 +4,297 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Games I've Made</title>
-  <meta name="description" content="A few browser games I've built. Click one to play.">
+  <meta name="description" content="Browser games I've built. Click one to play.">
+  <meta name="theme-color" content="#09090d">
+  <meta property="og:title" content="Games I've Made">
+  <meta property="og:description" content="Shanghai, Sail Away and Clanker Killer. All playable in your browser.">
+  <meta property="og:image" content="images/sailing.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f1ea;
-      --card: #ffffff;
-      --text: #1d1b17;
-      --muted: #6b665c;
-      --accent: #e8893a;
-      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
-      --shadow-hover: 0 2px 4px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.16);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121316;
-        --card: #1c1e23;
-        --text: #f1efe9;
-        --muted: #9a978f;
-        --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
-        --shadow-hover: 0 2px 4px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.5);
-      }
+      color-scheme: dark;
+      --bg: #09090d;
+      --text: #f4f2ee;
+      --muted: #9b98a6;
+      --line: rgba(255,255,255,.09);
+      --display: "Bricolage Grotesque", Inter, system-ui, sans-serif;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--text);
       font-family: Inter, system-ui, -apple-system, sans-serif;
-      line-height: 1.5;
+      line-height: 1.55;
+      overflow-x: hidden;
     }
-    main { max-width: 1100px; margin: 0 auto; padding: 56px 20px 72px; }
-    header { margin-bottom: 40px; }
-    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
-    header p { color: var(--muted); margin: 0; font-size: 1.1rem; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 28px;
+    /* ---------- animated backdrop ---------- */
+    .aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+    .aurora span {
+      position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%;
+      filter: blur(90px); opacity: .32; mix-blend-mode: screen;
+      animation: drift 26s ease-in-out infinite alternate;
     }
-    .game {
-      display: block;
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      box-shadow: var(--shadow);
-      transition: transform .2s ease, box-shadow .2s ease;
+    .aurora span:nth-child(1) { background: #2fbf71; top: -25vmax; left: -15vmax; }
+    .aurora span:nth-child(2) { background: #3f8cff; top: 20vh; right: -25vmax; animation-delay: -8s; animation-duration: 32s; }
+    .aurora span:nth-child(3) { background: #ff7a3d; bottom: -30vmax; left: 10vw; animation-delay: -16s; animation-duration: 38s; }
+    @keyframes drift {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(8vw,6vh) scale(1.15); }
+      100% { transform: translate(-6vw,10vh) scale(.95); }
     }
-    .game:hover, .game:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-    .game:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-    .thumb { aspect-ratio: 16 / 10; overflow: hidden; background: #000; }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
-    .game:hover .thumb img { transform: scale(1.04); }
-    .info { padding: 18px 20px 22px; }
-    .info h2 { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; }
-    .info p { margin: 0; color: var(--muted); font-size: .95rem; }
-    .play { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--accent); }
-    .game:hover .play { text-decoration: underline; }
+    .grain {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .08;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      max-width: 1180px; margin: 0 auto;
+      padding: clamp(72px, 14vh, 160px) 20px clamp(48px, 8vh, 96px);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
+      padding: 8px 16px; background: rgba(255,255,255,.03); backdrop-filter: blur(6px);
+    }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #2fbf71; box-shadow: 0 0 12px #2fbf71; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    h1 {
+      font-family: var(--display); font-weight: 800;
+      font-size: clamp(3.4rem, 15vw, 9.5rem); line-height: .9; letter-spacing: -0.04em;
+      margin: 28px 0 24px;
+    }
+    h1 .grad {
+      background: linear-gradient(90deg, #f5c04a, #ff7a3d, #ff4f8b, #4fc3f7, #2fbf71, #f5c04a);
+      background-size: 300% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 10s linear infinite;
+    }
+    @keyframes shimmer { to { background-position: 300% 0; } }
+    .hero p { font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted); max-width: 34ch; margin: 0; }
+    .scroll-cue {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 40px;
+      color: var(--text); text-decoration: none; font-weight: 600;
+    }
+    .scroll-cue span { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(5px); } }
+
+    /* ---------- marquee ---------- */
+    .marquee {
+      border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap;
+      padding: 18px 0; margin-bottom: clamp(56px, 10vh, 112px);
+      background: rgba(255,255,255,.02);
+    }
+    .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
+    .marquee-track span {
+      font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.6rem);
+      text-transform: uppercase; letter-spacing: -0.01em; padding-right: 40px;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.45);
+    }
+    .marquee-track span:nth-child(even) { color: var(--text); -webkit-text-stroke: 0; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ---------- game list ---------- */
+    .games {
+      max-width: 1180px; margin: 0 auto; padding: 0 20px;
+      display: flex; flex-direction: column; gap: clamp(72px, 12vh, 140px);
+    }
+    .game { display: block; color: inherit; text-decoration: none; }
+    .game-head {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 22px;
+    }
+    .num {
+      font-family: var(--display); font-weight: 600; font-size: .95rem;
+      color: var(--accent); letter-spacing: .1em; display: block; margin-bottom: 6px;
+    }
+    .game h2 {
+      font-family: var(--display); font-weight: 800; margin: 0;
+      font-size: clamp(2.6rem, 8vw, 6rem); line-height: .95; letter-spacing: -0.035em;
+      transition: color .3s ease;
+    }
+    .game:hover h2, .game:focus-visible h2 { color: var(--accent); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+    .tags li {
+      font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+      padding: 6px 12px; border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      color: color-mix(in srgb, var(--accent) 80%, white);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+
+    .media-wrap { perspective: 1400px; }
+    .media {
+      position: relative; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden;
+      background: #000;
+      transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+      box-shadow: 0 30px 60px -30px rgba(0,0,0,.8), 0 0 0 1px var(--line);
+      will-change: transform;
+    }
+    .game:hover .media, .game:focus-visible .media {
+      box-shadow:
+        0 40px 100px -30px color-mix(in srgb, var(--accent) 65%, transparent),
+        0 0 0 2px var(--accent);
+    }
+    .media.tilting { transition: transform .08s linear, box-shadow .5s ease; }
+    .media img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transform: scale(1.02); transition: transform 1.2s cubic-bezier(.2,.8,.2,1);
+    }
+    .game:hover .media img { transform: scale(1.07); }
+    /* cursor spotlight */
+    .media::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+      background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.18), transparent 45%);
+      transition: opacity .4s ease;
+    }
+    .game:hover .media::after { opacity: 1; }
+    /* bottom fade so the button reads */
+    .media::before {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,.55), transparent 40%);
+    }
+    .cta {
+      position: absolute; z-index: 2; right: clamp(14px, 3vw, 28px); bottom: clamp(14px, 3vw, 28px);
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: clamp(.9rem, 1.6vw, 1.05rem);
+      padding: 12px 22px; border-radius: 999px;
+      background: var(--accent); color: #111;
+      box-shadow: 0 10px 30px -8px var(--accent);
+      transform: translateY(6px); opacity: .92;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    }
+    .cta svg { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+    .game:hover .cta, .game:focus-visible .cta { transform: translateY(0); opacity: 1; }
+    .game:hover .cta svg { transform: translate(3px,-3px); }
+
+    .game p {
+      color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.15rem);
+      max-width: 60ch; margin: 22px 0 0;
+    }
+    .game:focus-visible { outline: none; }
+    .game:focus-visible .media { outline: 3px solid var(--accent); outline-offset: 6px; }
+
+    /* scroll reveal (only when JS is running) */
+    .js .reveal { opacity: 0; transform: translateY(60px); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1); }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    footer {
+      max-width: 1180px; margin: clamp(96px, 16vh, 180px) auto 0; padding: 32px 20px 48px;
+      border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem;
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .media { border-radius: 16px; }
+      .cta { padding: 7px 13px; font-size: .8rem; gap: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-  <main>
-    <header>
-      <h1>Games I've Made</h1>
-      <p>All of them run in your browser, on a computer or a phone. Click one to play.</p>
-    </header>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="grain" aria-hidden="true"></div>
 
-    <div class="grid">
-      <a class="game" href="https://adambabin.github.io/shanghai-game/">
-        <div class="thumb"><img src="images/shanghai.jpg" alt="Shanghai card game in progress, with a hand of cards and the discard pile"></div>
-        <div class="info">
-          <h2>Shanghai</h2>
-          <p>Family rummy with house rules. Play the computer, or host a room and have friends join from their phones.</p>
-          <span class="play">Play →</span>
-        </div>
-      </a>
+  <header class="hero">
+    <span class="eyebrow"><span class="dot"></span>3 games · playable now</span>
+    <h1>Games<br><span class="grad">I've made.</span></h1>
+    <p>Everything here runs right in your browser, on a computer or a phone. Pick one and play.</p>
+    <a class="scroll-cue" href="#games">See the games <span>↓</span></a>
+  </header>
 
-      <a class="game" href="https://adambabin.github.io/sailing-game/">
-        <div class="thumb"><img src="images/sailing.jpg" alt="A small sailboat crossing open water toward green islands at sunset"></div>
-        <div class="info">
-          <h2>Sail Away</h2>
-          <p>A relaxing 3D sail among Caribbean-style islands. Go ashore, fish, and steer clear of pirates.</p>
-          <span class="play">Play →</span>
-        </div>
-      </a>
-
-      <a class="game" href="https://adambabin.github.io/fps-01/">
-        <div class="thumb"><img src="images/clanker.jpg" alt="First-person view holding a rifle in a dim industrial arena lit with blue and orange lights"></div>
-        <div class="info">
-          <h2>Clanker Killer</h2>
-          <p>Wave-survival shooter. Fight escalating waves of robots and pick an upgrade after every wave.</p>
-          <span class="play">Play →</span>
-        </div>
-      </a>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
+      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
+      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
+      <span>Shanghai ✦</span><span>Sail Away ✦</span><span>Clanker Killer ✦</span>
     </div>
+  </div>
+
+  <main class="games" id="games">
+    <a class="game reveal" href="https://adambabin.github.io/shanghai-game/" target="_blank" rel="noopener" style="--accent:#f5c04a">
+      <div class="game-head">
+        <div><span class="num">01 / CARDS</span><h2>Shanghai</h2></div>
+        <ul class="tags"><li>Card game</li><li>Online multiplayer</li><li>Phone-friendly</li></ul>
+      </div>
+      <div class="media-wrap"><div class="media">
+        <img src="images/shanghai.jpg" alt="Shanghai on a phone: a round in progress with a hand of cards, the discard pile and the Shanghai button" loading="lazy">
+        <span class="cta">Play now <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 11 3M5 3h6v6"/></svg></span>
+      </div></div>
+      <p>Family rummy with our house rules. Play against the computer, or host a room and have friends and family join from their own phones with a code.</p>
+    </a>
+
+    <a class="game reveal" href="https://adambabin.github.io/sailing-game/" target="_blank" rel="noopener" style="--accent:#5ec8f5">
+      <div class="game-head">
+        <div><span class="num">02 / ADVENTURE</span><h2>Sail Away</h2></div>
+        <ul class="tags"><li>3D</li><li>Open water</li><li>Relaxing</li></ul>
+      </div>
+      <div class="media-wrap"><div class="media">
+        <img src="images/sailing.jpg" alt="A small sloop sailing across sparkling blue water toward green islands at sunset" loading="lazy">
+        <span class="cta">Play now <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 11 3M5 3h6v6"/></svg></span>
+      </div></div>
+      <p>A quiet sail among Caribbean-style islands. The wind does the work; you trim the sails and pick a heading. Go ashore, fish off the side, and keep clear of the pirates.</p>
+    </a>
+
+    <a class="game reveal" href="https://adambabin.github.io/fps-01/" target="_blank" rel="noopener" style="--accent:#ff8a3d">
+      <div class="game-head">
+        <div><span class="num">03 / SHOOTER</span><h2>Clanker Killer</h2></div>
+        <ul class="tags"><li>First-person shooter</li><li>Wave survival</li><li>9 arenas</li></ul>
+      </div>
+      <div class="media-wrap"><div class="media">
+        <img src="images/clanker.jpg" alt="First-person view holding a rifle in a dark industrial arena lit by blue and orange neon, with 'Stand by, hostiles inbound' on screen" loading="lazy">
+        <span class="cta">Play now <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 11 3M5 3h6v6"/></svg></span>
+      </div></div>
+      <p>The machines kept working after everyone left. Fight escalating waves of robots, pick an upgrade after every wave, and see how far you get.</p>
+    </a>
   </main>
+
+  <footer>
+    <span>More games on the way.</span>
+    <span>Hosted on GitHub Pages</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // 3D tilt + cursor spotlight on the images (mouse only, respects reduced motion)
+    const canTilt = matchMedia('(hover: hover) and (pointer: fine)').matches &&
+                    !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (canTilt) {
+      document.querySelectorAll('.media').forEach((m) => {
+        m.addEventListener('pointermove', (ev) => {
+          const r = m.getBoundingClientRect();
+          const x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+          m.classList.add('tilting');
+          m.style.setProperty('--ry', ((x - .5) * 8).toFixed(2) + 'deg');
+          m.style.setProperty('--rx', ((.5 - y) * 6).toFixed(2) + 'deg');
+          m.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+          m.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+        });
+        m.addEventListener('pointerleave', () => {
+          m.classList.remove('tilting');
+          m.style.setProperty('--rx', '0deg');
+          m.style.setProperty('--ry', '0deg');
+        });
+      });
+    }
+  </script>
 </body>
 </html>
