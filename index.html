@@ -70,12 +70,6 @@
     }
     @keyframes shimmer { to { background-position: 300% 0; } }
     .hero p { font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted); max-width: 34ch; margin: 0; }
-    .scroll-cue {
-      display: inline-flex; align-items: center; gap: 10px; margin-top: 40px;
-      color: var(--text); text-decoration: none; font-weight: 600;
-    }
-    .scroll-cue span { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
-    @keyframes bob { 50% { transform: translateY(5px); } }
 
 
     /* ---------- game list ---------- */
@@ -189,7 +183,6 @@
   <header class="hero">
     <h1>Games<br><span class="grad">I've made.</span></h1>
     <p>Everything here runs right in your browser, on a computer or a phone. Pick one and play.</p>
-    <a class="scroll-cue" href="#games">See the games <span>↓</span></a>
   </header>
 
   <main class="games" id="games">
