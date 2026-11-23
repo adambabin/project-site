@@ -57,18 +57,10 @@
       max-width: 1180px; margin: 0 auto;
       padding: clamp(72px, 14vh, 160px) 20px clamp(48px, 8vh, 96px);
     }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
-      padding: 8px 16px; background: rgba(255,255,255,.03); backdrop-filter: blur(6px);
-    }
-    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #2fbf71; box-shadow: 0 0 12px #2fbf71; animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 50% { opacity: .35; } }
     h1 {
       font-family: var(--display); font-weight: 800;
       font-size: clamp(3.4rem, 15vw, 9.5rem); line-height: .9; letter-spacing: -0.04em;
-      margin: 28px 0 24px;
+      margin: 0 0 24px;
     }
     h1 .grad {
       background: linear-gradient(90deg, #f5c04a, #ff7a3d, #ff4f8b, #4fc3f7, #2fbf71, #f5c04a);
@@ -195,7 +187,6 @@
   <div class="grain" aria-hidden="true"></div>
 
   <header class="hero">
-    <span class="eyebrow"><span class="dot"></span>3 games · playable now</span>
     <h1>Games<br><span class="grad">I've made.</span></h1>
     <p>Everything here runs right in your browser, on a computer or a phone. Pick one and play.</p>
     <a class="scroll-cue" href="#games">See the games <span>↓</span></a>
