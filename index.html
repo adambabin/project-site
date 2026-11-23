@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Games I've Made</title>
+  <meta name="description" content="A few browser games I've built. Click one to play.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --card: #ffffff;
+      --text: #1d1b17;
+      --muted: #6b665c;
+      --accent: #e8893a;
+      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
+      --shadow-hover: 0 2px 4px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.16);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121316;
+        --card: #1c1e23;
+        --text: #f1efe9;
+        --muted: #9a978f;
+        --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+        --shadow-hover: 0 2px 4px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.5);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 56px 20px 72px; }
+    header { margin-bottom: 40px; }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
+    header p { color: var(--muted); margin: 0; font-size: 1.1rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .game {
+      display: block;
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .game:hover, .game:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .game:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .thumb { aspect-ratio: 16 / 10; overflow: hidden; background: #000; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+    .game:hover .thumb img { transform: scale(1.04); }
+    .info { padding: 18px 20px 22px; }
+    .info h2 { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; }
+    .info p { margin: 0; color: var(--muted); font-size: .95rem; }
+    .play { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--accent); }
+    .game:hover .play { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Games I've Made</h1>
+      <p>All of them run in your browser, on a computer or a phone. Click one to play.</p>
+    </header>
+
+    <div class="grid">
+      <a class="game" href="https://adambabin.github.io/shanghai-game/">
+        <div class="thumb"><img src="images/shanghai.jpg" alt="Shanghai card game in progress, with a hand of cards and the discard pile"></div>
+        <div class="info">
+          <h2>Shanghai</h2>
+          <p>Family rummy with house rules. Play the computer, or host a room and have friends join from their phones.</p>
+          <span class="play">Play →</span>
+        </div>
+      </a>
+
+      <a class="game" href="https://adambabin.github.io/sailing-game/">
+        <div class="thumb"><img src="images/sailing.jpg" alt="A small sailboat crossing open water toward green islands at sunset"></div>
+        <div class="info">
+          <h2>Sail Away</h2>
+          <p>A relaxing 3D sail among Caribbean-style islands. Go ashore, fish, and steer clear of pirates.</p>
+          <span class="play">Play →</span>
+        </div>
+      </a>
+
+      <a class="game" href="https://adambabin.github.io/fps-01/">
+        <div class="thumb"><img src="images/clanker.jpg" alt="First-person view holding a rifle in a dim industrial arena lit with blue and orange lights"></div>
+        <div class="info">
+          <h2>Clanker Killer</h2>
+          <p>Wave-survival shooter. Fight escalating waves of robots and pick an upgrade after every wave.</p>
+          <span class="play">Play →</span>
+        </div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
